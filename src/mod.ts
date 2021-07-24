@@ -187,4 +187,7 @@ export class Thyme {
   [Symbol.toPrimitive](hint: string): string | number {
     return this.#date[Symbol.toPrimitive](hint);
   }
+  [Symbol.for('Deno.customInspect')](): string {
+    return `Thyme { ${this.valueOf()} }`;
+  }
 }
