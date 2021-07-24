@@ -1,3 +1,5 @@
+import {SimpleFormat} from '/types.ts';
+
 export function now() {
   return new Thyme();
 }
@@ -108,6 +110,73 @@ export class Thyme {
     this.#date.setUTCFullYear(value);
     return this;
   }
+
+  /* ==== Format methods ==== */
+
+  /**
+    * @description Formats the time as a string with the specified format.
+    * @param format The format to be used.
+    *
+    * **Format explanation:**  \
+    * Specify one of the following symbols to have them replaced with the
+    * corresponding value. Repeat a symbol to set a minimum width for the
+    * value. For example: `DD.MM.YYYY` could be `01.03.2023`, while `D.M.YY`
+    * would be `1.3.23`.
+    * There are no other options in this format.
+    *
+    * **Available symbols:**  \
+    * (case-sensitive)
+    * * `Y` — Year.  \
+    *   If you specify `Y` one or two times, it will result in the two-digit
+    *   year.  \
+    *   `Y` is never negative, so be sure to use `C` or `E` when the year could
+    *   be less than 0.
+    * * `M` — Month. The month as a number (`1` to `12`).
+    * * `D` — Day. The day of the month as a number (`1` to `31`).
+    * * `h` — Hour. `0` to `23`.
+    * * `m` — Minute. `0` to `59`.
+    * * `s` — Second. `0` to `59`.
+    * * `i` — Millisecond. `0` to `999`. Left-aligned.
+    * * `C` — Christ. Either `BC` or `AD`.
+    * * `E` — Era. Eiher `BCE` or `CE`.
+  **/
+  formatSimple(format: string): string {
+    let formatted = format;
+    for (const {key, value, left, padding} of Thyme.simpleFormat) {
+      const pad = left ? 'padEnd' : 'padStart';
+      formatted = formatted.replaceAll(
+        new RegExp(key + '+', 'g'),
+        match => value(this, match.length)[pad](match.length, padding ?? '0')
+      );
+    }
+    return formatted;
+  }
+  private static readonly simpleFormat: SimpleFormat = [
+    {
+      key: 'Y',
+      value: (thyme, length) =>
+        Math.abs(length! <= 2 ? thyme.year() % 100 : thyme.year()).toFixed()
+      // For two-digit year representations.
+    },
+    {key: 'M', value: (thyme) => thyme.month().toFixed()},
+    {key: 'D', value: (thyme) => thyme.day().toFixed()},
+    {key: 'h', value: (thyme) => thyme.hour().toFixed()},
+    {key: 'm', value: (thyme) => thyme.minute().toFixed()},
+    {key: 's', value: (thyme) => thyme.second().toFixed()},
+    {key: 'i', value: (thyme) => thyme.millisecond().toFixed(), left: true},
+    {
+      key: 'C',
+      value: (thyme) => thyme.year() < 0 ? 'BC' : 'AD',
+      left: true,
+      padding: ' '
+    },
+    {
+      key: 'E',
+      value: (thyme) => thyme.year() < 0 ? 'BCE' : 'CE',
+      left: true,
+      padding: ' '
+    }
+  ];
 
   /* ==== Utility methods ==== */
   // Mostly for internal use and auto-calling.
