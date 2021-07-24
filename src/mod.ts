@@ -1,3 +1,11 @@
+export function now() {
+  return new Thyme();
+}
+
+export function today() {
+  return new Thyme(new Date().setUTCHours(0, 0, 0, 0));
+}
+
 export class Thyme {
   constructor(date: Date);
   constructor(date: number);
