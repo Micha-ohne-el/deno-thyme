@@ -24,7 +24,7 @@ export class Thyme {
     }
   }
 
-  #date: Date;
+  readonly #date: Date;
 
   /**
     * @description Gets or sets the number of milliseconds into the second.
