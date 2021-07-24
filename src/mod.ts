@@ -1,4 +1,4 @@
-import {SimpleFormat} from '/types.ts';
+import {SimpleFormat} from './types.ts';
 
 export function now() {
   return new Thyme();

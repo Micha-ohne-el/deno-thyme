@@ -1,4 +1,4 @@
-import {Thyme} from '/mod.ts';
+import {Thyme} from '../src/mod.ts';
 
 import {assert, assertEquals, assertStringIncludes} from 'std/testing/asserts.ts';
 

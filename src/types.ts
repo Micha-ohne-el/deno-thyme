@@ -1,4 +1,4 @@
-import {Thyme} from '/mod.ts';
+import {Thyme} from './mod.ts';
 
 export type SimpleFormat = SimpleFormatDescriptor[];
 export interface SimpleFormatDescriptor {

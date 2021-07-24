@@ -1,9 +1,0 @@
-{
-  "imports": {
-    "/": "./src/",
-    "./": "./",
-    "../": "../",
-    "std/": "https://deno.land/std@0.100.0/",
-    "x/": "https://deno.land/x/"
-  }
-}
